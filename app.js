@@ -1,51 +1,17 @@
 const express = require('express');
 const connection = require('./db');
-var session = require('express-session');
-
 const port = 5000;
 const app = express();
-const cors = require('cors');
-
+const cors = require("cors");
 app.use(express.json());
-app.use(
-  express.urlencoded({
-    extended: true,
-  })
-);
+app.use(cors());
 
-const allowedOrigins = [
-  'http://localhost:3000',
-  'http://localhost:5000',
-];
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (origin === undefined || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-};
-
-app.use(cors(corsOptions));
-app.use(
-  session({
-    secret: 'secret',
-    resave: true,
-    saveUninitialized: true,
-  })
-);
-
-app.get('/', (req, res) => {
-  res.send('Welcome to my portfolio!');
-});
 
 app.listen(port, (err) => {
   if (err) {
     throw new Error('Something went wrong');
   }
-  console.log('it work');
+  console.log(`Server is listening on ${port}`);
 });
 
 // get all projects
@@ -63,7 +29,7 @@ app.get('/projects', (req, res) => {
 });
 
 // get one project
-app.get('/projects/:id', (req, res) => {
+app.get('/project/:id', (req, res) => {
   const projectId = req.params.id;
   connection.query(
     'SELECT * FROM project WHERE id = ?',
@@ -81,7 +47,7 @@ app.get('/projects/:id', (req, res) => {
 });
 
 // delete one project
-app.delete('/projects/:id', (req, res) => {
+app.delete('/project/:id', (req, res) => {
   const projectId = req.params.id;
   connection.query(
     'DELETE FROM project WHERE id = ?',
@@ -100,7 +66,7 @@ app.delete('/projects/:id', (req, res) => {
 
 
 //add a project
-app.post('/projects', (req, res) => {
+app.post('/admin/projects', (req, res) => {
   const { title, description, main_picture, secondary_picture, third_picture, url_github, techno_id } = req.body;
   connection.query(
     'INSERT INTO users (title, description, main_picture, secondary_picture, third_picture, url_github, techno_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
