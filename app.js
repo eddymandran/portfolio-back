@@ -16,8 +16,7 @@ app.listen(port, (err) => {
 
 // get all projects
 app.get('/projects', (req, res) => {
-  const projects = req.body;
-  connection.query('SELECT * FROM project', [projects], (err, results) => {
+  connection.query('SELECT * FROM project', (err, results) => {
     if (err) {
       console.log(err);
       res.status(500).send('An error occurred to display all projects');
@@ -69,7 +68,7 @@ app.delete('/project/:id', (req, res) => {
 app.post('/admin/projects', (req, res) => {
   const { title, description, main_picture, secondary_picture, third_picture, url_github, techno_id } = req.body;
   connection.query(
-    'INSERT INTO users (title, description, main_picture, secondary_picture, third_picture, url_github, techno_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
+    'INSERT INTO project (title, description, main_picture, secondary_picture, third_picture, url_github, techno_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
     [title, description, main_picture, secondary_picture, third_picture, url_github, techno_id],
     (err, results) => {
       if (err) {
