@@ -30,6 +30,7 @@ app.get('/projects', (req, res) => {
 // get one project
 app.get('/project/:id', (req, res) => {
   const projectId = req.params.id;
+  console.log(projectId)
   connection.query(
     'SELECT * FROM project INNER JOIN techno ON techno.id = project.techno_id WHERE project.id = ?',
     [projectId],
