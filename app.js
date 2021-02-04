@@ -16,7 +16,7 @@ app.listen(port, (err) => {
 
 // get all projects
 app.get('/projects', (req, res) => {
-  connection.query('SELECT * FROM project', (err, results) => {
+  connection.query('SELECT * FROM project INNER JOIN techno ON techno.id = project.techno_id ', (err, results) => {
     if (err) {
       console.log(err);
       res.status(500).send('An error occurred to display all projects');
@@ -31,7 +31,7 @@ app.get('/projects', (req, res) => {
 app.get('/project/:id', (req, res) => {
   const projectId = req.params.id;
   connection.query(
-    'SELECT * FROM project WHERE id = ?',
+    'SELECT * FROM project INNER JOIN techno ON techno.id = project.techno_id WHERE project.id = ?',
     [projectId],
     (err, results) => {
       if (err) {
