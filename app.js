@@ -27,6 +27,19 @@ app.get('/projects', (req, res) => {
   });
 });
 
+//get all technos
+app.get('/technos', (req, res) => {
+  connection.query('SELECT * FROM techno', (err, results) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send('An error occurred to display all techno');
+    } else {
+      console.log('results', results);
+      res.status(200).json(results);
+    }
+  });
+});
+
 // get one project
 app.get('/project/:id', (req, res) => {
   const projectId = req.params.id;
